@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Drawing;
+using System.Reflection.Metadata;
 
 class Point
 {
@@ -14,14 +16,7 @@ class Point
 
     public Point()
     {
-        x = 0;
-        y = 0;
-
-    }
-    public Point(string name, int x, int y)
-    {
-        Console.WriteLine("Enter a letter of Point:");
-        this.name = Console.ReadLine();
+        
         Console.WriteLine("Enter X:");
         this.x = int.Parse(Console.ReadLine());
         Console.WriteLine("Enter Y:");
@@ -32,8 +27,8 @@ class Point
 
 class Figure
     {
-    int number;
-    Point[] points;
+    private int number;
+    private Point[] points;
     string name;
     public string Name
     {
@@ -42,50 +37,49 @@ class Figure
     }
     public void InitializeFigure()
         {
-            Console.WriteLine("enter number of verticles of your figure");
-            number = int.Parse(Console.ReadLine());
-            for (int i = 0; i < number; i++)
+        Console.WriteLine("введите количество вершин вашей фигуры");
+        number = int.Parse(Console.ReadLine());
+        Console.WriteLine("введите название вашей фигуры");
+        name = Console.ReadLine();
+        points = new Point[number];
+
+        for (int i = 0; i < number; i++)
             {
                 points[i] = new Point();
             }
 
         }
-        public double LengthSide(Point a, Point b)
+    public double LengthSide(Point a, Point b)
+    {
+        return Math.Sqrt(Math.Pow(a.X - b.X, 2) + Math.Pow(a.Y - b.Y, 2));
+    }
+    public double PerimeterCalculate()
+    {
+        double perimeter = 0;
+        for (int i = 0; i < points.Length - 1; i++)
         {
-            return Math.Sqrt(Math.Pow(a.X - b.X, 2) + Math.Pow(a.Y - b.Y, 2));
+            perimeter += this.LengthSide(points[i], points[i+1]);
         }
-        public double CalculatePerimeter(params Point[] points)
-        {
-            double perimeter = 0;
-            for (int i = 1; i < points.Length; i++)
-            {
-                perimeter += this.LengthSide(points[i - 1], points[i]);
-            }
-            perimeter += this.LengthSide(points[0], points[points.Length]);
-            return perimeter;
-        }
-        public Figure(string name)
-        {
-            InitializeFigure();
-        }
+        perimeter += this.LengthSide(points[0], points[points.Length-1]);
+        return perimeter;
+       
+    }
+    public Figure()
+    {
+        InitializeFigure();
+    }
     }
 
 
-namespace part2
+namespace part3
 {
     class Program
     {
         static void Main(string[] args)
         {
-            double side1, side2;
-            Console.Write("Side1: ");
-            side1 = Convert.ToDouble(Console.ReadLine());
-            Console.Write("Side2: ");
-            side2 = Convert.ToDouble(Console.ReadLine());
-
-            Rectangle a = new Rectangle(side1, side2);
-            Console.WriteLine($"Area: {a.Area}, Perimeter: {a.Perimeter}");
-            Console.ReadLine();
+            Figure a = new Figure();
+            Console.WriteLine($"Name: {a.Name}, Perimeter: {a.PerimeterCalculate()}");
+            Console.ReadKey();
         }
     }
 }
