@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Reflection.Metadata;
 
-class Point
+public class Point
 {
     int x, y;
     public int X
@@ -22,13 +22,17 @@ class Point
         Console.WriteLine("Enter Y:");
         this.y = int.Parse(Console.ReadLine());
     }
+    public Point(int x, int y)
+    {
+        this.x = x; this.y = y; 
+    }
 }
 
 
-class Figure
+public class Figure
     {
     private int number;
-    private Point[] points;
+    private Point?[] points;
     string name;
     public string Name
     {
@@ -36,7 +40,7 @@ class Figure
         set{ name = value;}
     }
     public void InitializeFigure()
-        {
+    {
         Console.WriteLine("введите количество вершин вашей фигуры");
         number = int.Parse(Console.ReadLine());
         Console.WriteLine("введите название вашей фигуры");
@@ -44,16 +48,16 @@ class Figure
         points = new Point[number];
 
         for (int i = 0; i < number; i++)
-            {
-                points[i] = new Point();
-            }
-
+        {
+            points[i] = new Point();
         }
+
+    }
     public double LengthSide(Point a, Point b)
     {
         return Math.Sqrt(Math.Pow(a.X - b.X, 2) + Math.Pow(a.Y - b.Y, 2));
     }
-    public double PerimeterCalculate()
+    public double PerimeterCalculate(params Point[] points)
     {
         double perimeter = 0;
         for (int i = 0; i < points.Length - 1; i++)
@@ -64,11 +68,35 @@ class Figure
         return perimeter;
        
     }
+    public double PerimeterCalculate()
+    {
+        double perimeter = 0;
+        for (int i = 0; i < points.Length - 1; i++)
+        {
+            perimeter += this.LengthSide(points[i], points[i + 1]);
+        }
+        perimeter += this.LengthSide(points[0], points[points.Length - 1]);
+        return perimeter;
+
+    }
     public Figure()
     {
         InitializeFigure();
     }
+    public Figure(string name,  int number, params Point[] points)
+    {
+        this.name = name;
+        this.number = number;
+        this.points = new Point[number];
+
+        for (int i = 0; i < number; i++)
+        {
+            this.points[i] = points[i];
+        }
+
     }
+}
+
 
 
 namespace part3

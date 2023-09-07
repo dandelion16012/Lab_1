@@ -1,6 +1,6 @@
 ﻿using System;
 
-class Rectangle
+public class Rectangle
 {
     double _side1;
     double _side2;
